@@ -17,10 +17,10 @@ RUN apt-get update && apt-get install -y \
 RUN python3 -m pip install --upgrade pip
 
 # # 安装 PyTorch cu118
-# RUN pip install \
-#     torch==2.1.2+cu118 \
-#     torchvision==0.16.2+cu118 \
-#     --index-url https://download.pytorch.org/whl/cu118
+RUN pip install \
+    torch==2.1.2+cu118 \
+    torchvision==0.16.2+cu118 \
+    --index-url https://download.pytorch.org/whl/cu118
 
 # 安装 vLLM
 RUN pip install vllm
@@ -32,7 +32,7 @@ RUN rm -rf ~/.cache/pip
 # ==============================
 # Stage 2: runtime
 # ==============================
-FROM nvidia/cuda:11.8.0-runtime-ubuntu22.04
+FROM nvidia/cuda:11.8.0-runtime-ubuntu22.04 AS runtime
 
 ENV DEBIAN_FRONTEND=noninteractive
 
