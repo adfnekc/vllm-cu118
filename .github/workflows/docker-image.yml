@@ -29,7 +29,7 @@ jobs:
       # 设置 Docker client 指向 DIND 服务，禁用 TLS
       - name: Setup Docker client
         run: |
-          echo "DOCKER_HOST=tcp://docker:2375" >> $GITHUB_ENV
+          echo "DOCKER_HOST=tcp://localhost:2375" >> $GITHUB_ENV
           unset DOCKER_TLS_VERIFY
           unset DOCKER_CERT_PATH
 
