@@ -26,6 +26,7 @@ jobs:
             sh -c "
               # 禁用 TLS
               export DOCKER_TLS_CERTDIR=''
+              export DOCKER_HOST=tcp://localhost:2375
               
               # 构建镜像
               docker build -t vllm-cu118:latest .
