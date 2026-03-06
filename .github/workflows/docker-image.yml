@@ -22,22 +22,27 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # 删除本地 Docker 配置，避免 TLS/ca.pem 错误
+      - name: Clean Docker config
+        run: rm -rf ~/.docker
+
+      # 设置 Docker client 指向 DIND 服务，禁用 TLS
       - name: Setup Docker client
         run: |
           echo "DOCKER_HOST=tcp://docker:2375" >> $GITHUB_ENV
-          echo "DOCKER_TLS_VERIFY=0" >> $GITHUB_ENV
-          echo "DOCKER_CERT_PATH=" >> $GITHUB_ENV
+          unset DOCKER_TLS_VERIFY
+          unset DOCKER_CERT_PATH
 
       - name: Verify Docker version
         run: |
           docker version
           docker info
 
-      - name: Build image
+      - name: Build Docker image
         run: docker build -t vllm-cu118:latest .
 
-      - name: Save image as artifact
-        run: docker save vllm-cu118:latest -o vllm-cu118.tar --platform linux/amd64
+      - name: Save Docker image as artifact
+        run: docker save -o vllm-cu118.tar vllm-cu118:latest
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
