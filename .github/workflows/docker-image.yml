@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Docker 18.09 Build CI
 
 on:
   push:
@@ -9,43 +9,34 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
-    services:
-      docker:
-        image: docker:18.09-dind
-        options: --privileged
-        ports:
-          - 2375:2375
-        env:
-          DOCKER_TLS_CERTDIR: ""
-
     steps:
       - uses: actions/checkout@v4
 
-      # 删除本地 Docker 配置，避免 TLS/ca.pem 错误
-      - name: Clean Docker config
-        run: rm -rf ~/.docker
-
-      # 设置 Docker client 指向 DIND 服务，禁用 TLS
-      - name: Setup Docker client
+      # 使用 docker 容器启动 18.09-dind 来做 build
+      - name: Run Docker 18.09 build in container
         run: |
-          echo "DOCKER_HOST=tcp://localhost:2375" >> $GITHUB_ENV
-          unset DOCKER_TLS_VERIFY
-          unset DOCKER_CERT_PATH
+          # 1. 创建一个临时目录存放 tar
+          mkdir -p $GITHUB_WORKSPACE/artifacts
 
-      - name: Verify Docker version
-        run: |
-          docker version
-          docker info
+          # 2. 启动 docker:18.09-dind 容器，挂载仓库
+          docker run --rm --privileged \
+            -v $GITHUB_WORKSPACE:/workspace \
+            -w /workspace \
+            docker:18.09-dind \
+            sh -c "
+              # 禁用 TLS
+              export DOCKER_TLS_CERTDIR=''
+              
+              # 构建镜像
+              docker build -t vllm-cu118:latest .
 
-      - name: Build Docker image
-        run: docker build -t vllm-cu118:latest .
+              # 保存镜像到挂载目录
+              docker save vllm-cu118:latest -o /workspace/artifacts/vllm-cu118.tar
+            "
 
-      - name: Save Docker image as artifact
-        run: docker save -o vllm-cu118.tar vllm-cu118:latest
-
-      - name: Upload artifact
+      # 上传 artifact
+      - name: Upload Docker image artifact
         uses: actions/upload-artifact@v4
         with:
           name: docker-image
-          path: vllm-cu118.tar
+          path: artifacts/vllm-cu118.tar
