@@ -14,9 +14,23 @@ jobs:
       docker:
         image: docker:18.09-dind
         options: --privileged
+        ports:
+          - 2375:2375
+        env:
+          DOCKER_TLS_CERTDIR: ""
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Setup Docker client
+        run: |
+          echo "DOCKER_HOST=tcp://docker:2375" >> $GITHUB_ENV
+          echo "DOCKER_TLS_VERIFY=0" >> $GITHUB_ENV
+
+      - name: Verify Docker version
+        run: |
+          docker version
+          docker info
 
       - name: Build image
         run: docker build -t vllm-cu118:latest .
