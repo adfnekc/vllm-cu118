@@ -24,9 +24,8 @@ jobs:
             -w /workspace \
             docker:18.09-dind \
             sh -c "
-              # 禁用 TLS
+              unset DOCKER_HOST
               export DOCKER_TLS_CERTDIR=''
-              export DOCKER_HOST=tcp://localhost:2375
               
               # 构建镜像
               docker build -t vllm-cu118:latest .
