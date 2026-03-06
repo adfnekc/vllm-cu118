@@ -26,6 +26,7 @@ jobs:
         run: |
           echo "DOCKER_HOST=tcp://docker:2375" >> $GITHUB_ENV
           echo "DOCKER_TLS_VERIFY=0" >> $GITHUB_ENV
+          echo "DOCKER_CERT_PATH=" >> $GITHUB_ENV
 
       - name: Verify Docker version
         run: |
