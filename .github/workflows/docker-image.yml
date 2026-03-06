@@ -2,9 +2,9 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build:
@@ -18,15 +18,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set docker host
-        run: echo "DOCKER_HOST=tcp://localhost:2375" >> $GITHUB_ENV
-
       - name: Build image
-        run: docker build -t vllm-cu118:latest . 
-        
+        run: docker build -t vllm-cu118:latest .
+
       - name: Save image as artifact
         run: docker save vllm-cu118:latest -f vllm-cu118.tar
-      
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
