@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-            - name: Download and install Docker 18.09
+        - name: Download and install Docker 18.09
         run: |
           # 下载 Docker 18.09.9 二进制 tar.gz
           curl -fsSL https://download.docker.com/linux/static/stable/x86_64/docker-18.09.9.tgz -o docker-18.09.9.tgz
