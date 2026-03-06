@@ -22,7 +22,7 @@ jobs:
         run: docker build -t vllm-cu118:latest .
 
       - name: Save image as artifact
-        run: docker save vllm-cu118:latest vllm-cu118.tar
+        run: docker save vllm-cu118:latest -o vllm-cu118.tar --platform linux/amd64
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
