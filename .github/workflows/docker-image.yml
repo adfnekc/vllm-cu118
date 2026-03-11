@@ -28,6 +28,7 @@ jobs:
           sudo dockerd -H unix:///var/run/docker.sock --storage-driver=overlay2 &
           # 等待 daemon 启动
           sleep 4
+          docker builder prune -f
           docker info
 
       # 构建 Docker 镜像
