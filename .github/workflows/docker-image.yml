@@ -22,6 +22,11 @@ jobs:
           rm -rf docker docker-18.09.9.tgz
           docker --version
 
+      - name: Clean up previous Docker state
+        run: |
+          sudo systemctl stop docker || true
+          sudo rm -f /var/run/docker.pid
+
       # 启动 Docker daemon
       - name: Start Docker daemon
         run: |
