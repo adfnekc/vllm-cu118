@@ -13,28 +13,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Download and install Docker 18.09
-        run: |
-          # 下载 Docker 18.09.9 二进制 tar.gz
-          curl -fsSL https://download.docker.com/linux/static/stable/x86_64/docker-18.09.9.tgz -o docker-18.09.9.tgz
-          tar xzvf docker-18.09.9.tgz
-          sudo cp docker/* /usr/local/bin/
-          rm -rf docker docker-18.09.9.tgz
-          docker --version
+      - name: 安装 Docker 18.09
+        uses: docker/setup-docker-action@v5.0.0
+        with:
+          inputs:
+            version: 18.09
 
-      - name: Clean up previous Docker state
-        run: |
-          sudo systemctl stop docker || true
-          sudo rm -f /var/run/docker.pid
-
-      # 启动 Docker daemon
-      - name: Start Docker daemon
-        run: |
-          sudo dockerd -H unix:///var/run/docker.sock --storage-driver=overlay2 &
-          # 等待 daemon 启动
-          sleep 4
-          docker builder prune -f
-          docker info
+      - name: 检查 Docker 版本
+        run: docker version
 
       # 构建 Docker 镜像
       - name: Build Docker image
