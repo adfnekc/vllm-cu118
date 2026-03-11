@@ -34,7 +34,7 @@ jobs:
       # 构建 Docker 镜像
       - name: Build Docker image
         run: |
-          docker build -t vllm-cu118:latest .
+          docker build -t vllm-cu118:latest --no-cache .
 
       # 保存镜像为 artifact
       - name: Save Docker image
