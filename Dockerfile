@@ -35,7 +35,8 @@ FROM nvidia/cuda:11.8.0-runtime-ubuntu22.04 AS runtime
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update && apt-get install -y \
+RUN apt-get update 
+RUN apt-get install -y \
     python3 \
     python3-pip \
     libglib2.0-0
