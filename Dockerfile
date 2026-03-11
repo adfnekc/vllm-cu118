@@ -11,8 +11,7 @@ RUN apt-get update && apt-get install -y \
     python3-dev \
     git \
     build-essential \
-    ninja-build \
-    && rm -rf /var/lib/apt/lists/*
+    ninja-build
 
 RUN python3 -m pip install --upgrade pip
 
@@ -39,8 +38,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y \
     python3 \
     python3-pip \
-    libglib2.0-0 \
-    && rm -rf /var/lib/apt/lists/*
+    libglib2.0-0
 
 # 复制 python packages
 COPY --from=builder /usr/local/lib/python3.10/dist-packages /usr/local/lib/python3.10/dist-packages
