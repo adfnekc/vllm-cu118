@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # Docker二进制安装和镜像构建脚本
 # 描述：通过二进制包安装Docker 18.09.9，后台启动dockerd，非root用户可用
 
