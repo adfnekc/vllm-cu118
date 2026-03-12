@@ -16,8 +16,7 @@ jobs:
       - name: 安装 Docker 18.09
         uses: docker/setup-docker-action@v5.0.0
         with:
-          inputs:
-            version: 18.09
+          version: 18.09
 
       - name: 检查 Docker 版本
         run: docker version
@@ -25,7 +24,7 @@ jobs:
       # 构建 Docker 镜像
       - name: Build Docker image
         run: |
-          docker build -t vllm-cu118:latest --no-cache .
+          docker build -t vllm-cu118:latest .
 
       # 保存镜像为 artifact
       - name: Save Docker image
